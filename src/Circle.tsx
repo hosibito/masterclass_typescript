@@ -1,3 +1,4 @@
+import { useState } from "react";
 import styled from "styled-components";
 
 interface ContainerProps {
@@ -15,30 +16,21 @@ const Container = styled.div<ContainerProps>`
 
 interface CircleProps {
     bgColor: string;
-    borderColor?: string;
-    text?: string;
+    borderColor?: string;    
   }
 
-function Circle({ bgColor, borderColor, text = "default text" }: CircleProps) {
-  return (
-    <Container bgColor={bgColor} borderColor={borderColor ?? bgColor}>
-      {text}
-    </Container>
-  );
+function Circle({ bgColor, borderColor }: CircleProps) {
+    const [value, setValue] = useState<string>("");
+    return <Container bgColor={bgColor} borderColor={borderColor ?? bgColor} />;
 }
 
 export default Circle;
 
 /*
-* 의식의 흐름
-1. Circle 를 만들어주고 Props를 정해준다.. 여기서 값이 있어도 되는것 없어도 되는것을 정해준다. 
-2. Circle 는 bgColor, borderColor, text 를 받아오는데 그중 두가지는 require값이 아니다. 
-3. borderColor, text 값이 안들어왔을때의 처리를 해준다. 
-    - text = "default text" 디폴트값을 준다.
-    - borderColor={borderColor ?? bgColor} borderColor값이 없을때 bgColor를 준다.
-
-4. Container에서 style 값을 적용하는데. style는 값이 없을수 없다. 
-5. 따라서 ContainerProps 은 전부 require값이다.
-6. const Container = styled.div<ContainerProps>` 으로 받아와서
-7. ${(props) => props.bgColor}, ${(props) => props.borderColor} 로 적용한다.
+1. TS react 에서 useState 의 타입은 우선 기본값으로 자동 추측한다.
+    const [value, setValue] = useState(0);  value값을 number로 추측
+2. 기본값없이 지정해 줄수 있다. 
+    const [value, setValue] = useState<string>();
+2. 여러개 지정도 가능하나 쓸일이 거의 없다. 
+    const [value, setValue] = useState<string|number>();
 */
