@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router";
 import styled from "styled-components";
 
@@ -35,11 +35,25 @@ function Coin() {
   const [loading, setLoading] = useState(true);
   const { coinId } = useParams();
   const { state } = useLocation() as RouterState;  
+  const [info, setInfo] = useState({});
+  const [priceInfo, setPriceInfo] = useState({});
+  useEffect(() => {
+    (async () => {
+      const infoData = await (
+        await fetch(`https://api.coinpaprika.com/v1/coins/${coinId}`)
+      ).json();
+      const priceData = await (
+        await fetch(`https://api.coinpaprika.com/v1/tickers/${coinId}`)
+      ).json();
 
-  console.log(coinId)
-  console.log(state ? state.name : "name loding..") 
-  console.log(state ? state.rank : "rank loding..")
-
+      console.log(infoData)
+      console.log(priceData)
+      setInfo(infoData);
+      setPriceInfo(priceData);
+    })();
+  }, []);  
+  // console.log(infoData)
+  // console.log(priceData)
   return (
     <Container>
       <Header>
@@ -50,25 +64,3 @@ function Coin() {
   );
 }
 export default Coin;
-
-/**
-interface RouterState {
-  state : {
-    name: string;
-    rank: number;
-  }
-}
-
-function Coin() {
-  const { coinId } = useParams();
-  const { state } = useLocation() as RouterState;  
-
-  console.log(coinId)
-  console.log(state.name)
-  console.log(state.rank)
-
-  return <h1>Coin: </h1>;
-}
-export default Coin;
-
- */
