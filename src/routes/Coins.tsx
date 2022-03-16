@@ -1,8 +1,11 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const Container = styled.div`
   padding: 0px 20px;
+  max-width: 480px;
+  margin: 0 auto;
 `;
 
 const Header = styled.header`
@@ -36,62 +39,59 @@ const Title = styled.h1`
   color: ${(props) => props.theme.accentColor};
 `;
 
-const coins = [
-    {
-      id: "btc-bitcoin",
-      name: "Bitcoin",
-      symbol: "BTC",
-      rank: 1,
-      is_new: false,
-      is_active: true,
-      type: "coin",
-    },
-    {
-      id: "eth-ethereum",
-      name: "Ethereum",
-      symbol: "ETH",
-      rank: 2,
-      is_new: false,
-      is_active: true,
-      type: "coin",
-    },
-    {
-      id: "hex-hex",
-      name: "HEX",
-      symbol: "HEX",
-      rank: 3,
-      is_new: false,
-      is_active: true,
-      type: "token",
-    },
-  ];
+const Loader = styled.span`
+  text-align: center;
+  display: block;
+`;
+
+interface CoinInterface {
+  id: string;
+  name: string;
+  symbol: string;
+  rank: number;
+  is_new: boolean;
+  is_active: boolean;
+  type: string;
+}
 
 function Coins() {
+    const [coins, setCoins] = useState<CoinInterface[]>([]);
+    const [loading, setLoading] = useState(true);
+    useEffect(() => {
+      (async () => {
+        const response = await fetch("https://api.coinpaprika.com/v1/coins");
+        const json = await response.json();
+        setCoins(json.slice(0, 100));
+        setLoading(false);
+      })();
+    }, []);
+
     return (
         <Container>
-          <Header>
-            <Title>코인</Title>
-          </Header>
-          <CoinsList>
-            {coins.map((coin) => (
-              <Coin key={coin.id}>
-                <Link to={`/${coin.id}`}>{coin.name} &rarr;</Link>
-              </Coin>
-            ))}
-          </CoinsList>
+            <Header>
+                <Title>코인</Title>
+            </Header>
+            {loading ? (
+                <Loader>Loading...</Loader>
+            ) : (
+                <CoinsList>
+                    {coins.map((coin) => (
+                    <Coin key={coin.id}>
+                        <Link to={`/${coin.id}`}>{coin.name} &rarr;</Link>
+                    </Coin>
+                    ))}
+                </CoinsList>
+                )
+            }
         </Container>
       );
   }
   export default Coins;
 
   /**
-   * Container 를 div 로 만든다. 
-   * Header 를 header 로 만든다.
-   * Title 를 h1 으로 만든다
-   * CoinsList 를 ul 로
-   * Coin 을 li 로
-   * 그뒤 스타일을 꾸며준다. 
-   * 링크를 걸어주고 각각의 정보를 넣어준다
-   * 정보는 나중에는 받아올것이나 우선은 테스트리스트에서 넣는다.
+    정보 가져와서 넣어준다.. 딱히 설명할게 없네?
+
+    다만 문제점이 ex) Bitcion 을 선택해서 선택환 화면으로 넘어갓다가 다시 되돌아오면.. 로딩을 다시한다.
+    처음 시작할때 한번만 로깅되게 일부러 설정했는데 다른화면 갓다가 되돌아왓다고 이걸 굳이 다시 로딩하는건 원하는 바가 아니다. 다음 섹션에서 처리할것임. 
    */
 
