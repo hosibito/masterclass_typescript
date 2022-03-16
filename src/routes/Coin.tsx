@@ -37,8 +37,8 @@ function Coin() {
   const { state } = useLocation() as RouterState;  
 
   console.log(coinId)
-  console.log(state.name) 
-  console.log(state.rank)
+  console.log(state ? state.name : "name loding..") 
+  console.log(state ? state.rank : "rank loding..")
 
   return (
     <Container>
