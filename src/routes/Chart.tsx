@@ -61,7 +61,10 @@ function Chart() {
                 xaxis: {
                   axisBorder: { show: false },
                   axisTicks: { show: false },
-                  labels: { show: false },   
+                  labels: { 
+                    show: false,
+                    datetimeFormatter: {month: "mmm 'yy"} 
+                  },   
                   type: "datetime",
                   categories: data?.map((price) => price.time_close),               
                 },
