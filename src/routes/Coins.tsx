@@ -1,3 +1,4 @@
+import { Helmet } from "react-helmet";
 import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
@@ -66,6 +67,9 @@ function Coins() {
    
     return (
         <Container>
+            <Helmet>
+              <title>코인</title>
+            </Helmet>
             <Header>
                 <Title>코인</Title>
             </Header>
@@ -73,7 +77,7 @@ function Coins() {
                 <Loader>Loading...</Loader>
             ) : (
                 <CoinsList>
-                    {data?.slice(0,10).map((coin) => (
+                    {data?.slice(0,50).map((coin) => (
                     <Coin key={coin.id}>
                         <Link to={`/${coin.id}`}  state={ { name : coin.name,  rank: coin.rank } }  >
                           <Img src={`https://cryptoicon-api.vercel.app/api/icon/${coin.symbol.toLowerCase()}`}/>

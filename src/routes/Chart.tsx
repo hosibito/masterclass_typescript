@@ -22,7 +22,10 @@ interface ChartProps {
 function Chart() {
     const outletDatas = useOutletContext<ChartProps>();
     const { isLoading, data } = useQuery<IHistorical[]>(["ohlcv", outletDatas.coinId], () =>
-        fetchCoinHistory(outletDatas.coinId)
+        fetchCoinHistory(outletDatas.coinId),
+        {
+            refetchInterval: 10000,
+        }
     );   
    
     return (

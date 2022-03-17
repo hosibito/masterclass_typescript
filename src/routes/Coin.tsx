@@ -1,4 +1,5 @@
 import { useQuery } from "react-query";
+import { Helmet } from "react-helmet";
 import { useLocation, useParams , useMatch} from "react-router";
 import { Outlet , Link} from "react-router-dom";
 import styled from "styled-components";
@@ -146,7 +147,10 @@ function Coin() {
   );
   const { isLoading: tickersLoading, data: tickersData } = useQuery<PriceData>(
     ["tickers", coinId],
-    () => fetchCoinTickers(coinId!)
+    () => fetchCoinTickers(coinId!),
+    {
+      refetchInterval: 5000,
+    }
   );
   //!=> 확장 할당 어션셜로 값이 무조건 할당되어있다고 컴파일러에게 전달해 값이 없어도 변수를 사용할 수 있게 한다
  
@@ -154,6 +158,11 @@ function Coin() {
 
   return (
     <Container>
+      <Helmet>
+        <title>
+          {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
+        </title>
+      </Helmet>
       <Header>
         <Title>
           {state?.name ? state.name : ( loading ? "Loading..." : infoData?.name ) }
@@ -173,8 +182,8 @@ function Coin() {
                 <span>${infoData?.symbol}</span>
               </OverviewItem>
               <OverviewItem>
-                <span>Open Source:</span>
-                <span>{infoData?.open_source ? "Yes" : "No"}</span>
+                <span>Price:</span>
+                <span>${tickersData?.quotes.USD.price.toFixed(3)}</span>
               </OverviewItem>
             </Overview>
 
