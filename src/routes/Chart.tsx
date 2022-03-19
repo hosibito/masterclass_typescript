@@ -17,6 +17,7 @@ interface IHistorical {
   
 interface ChartProps {
     coinId: string;
+    isDark: boolean;
 }
 
 function Chart() {
@@ -25,8 +26,9 @@ function Chart() {
         fetchCoinHistory(outletDatas.coinId),
         {
             refetchInterval: 10000,
-        }
+        }        
     );   
+    console.log(outletDatas.isDark)
    
     return (
         <div>
@@ -43,7 +45,7 @@ function Chart() {
               ]}
               options={{
                 theme: {
-                  mode: "dark",
+                  mode:  outletDatas.isDark ? "dark" : "light",
                 },
                 chart: {
                   height: 300,

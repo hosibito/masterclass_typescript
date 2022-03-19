@@ -1,5 +1,5 @@
 import { useQuery } from "react-query";
-import { Helmet } from "react-helmet";
+import { HelmetProvider, Helmet } from "react-helmet-async";
 import { useLocation, useParams , useMatch} from "react-router";
 import { Outlet , Link} from "react-router-dom";
 import styled from "styled-components";
@@ -134,12 +134,16 @@ interface PriceData {
     };
   };
 }
+interface ICoinProps {
+  isDark: boolean;
+}
 
-function Coin() {
+function Coin({ isDark }: ICoinProps) {
   const { coinId } = useParams();
   const { state } = useLocation() as RouterState;  
   const priceMatch = useMatch("/:coinId/price");
   const chartMatch = useMatch("/:coinId/chart");
+  console.log("coin",isDark )
 
   const { isLoading: infoLoading, data: infoData } = useQuery<InfoData>(
     ["info", coinId],
@@ -158,11 +162,13 @@ function Coin() {
 
   return (
     <Container>
-      <Helmet>
-        <title>
-          {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
-        </title>
-      </Helmet>
+      <HelmetProvider>
+        <Helmet>
+          <title>
+            {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
+          </title>
+        </Helmet>
+      </HelmetProvider>
       <Header>
         <Title>
           {state?.name ? state.name : ( loading ? "Loading..." : infoData?.name ) }
@@ -209,7 +215,7 @@ function Coin() {
               </Tab>
             </Tabs>
 
-            <Outlet context={{coinId:coinId}}/> 
+            <Outlet context={{coinId:coinId, isDark:isDark}}/> 
           </>
         )}
     </Container>

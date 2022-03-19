@@ -1,4 +1,4 @@
-import { Helmet } from "react-helmet";
+import { HelmetProvider, Helmet } from "react-helmet-async";
 import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
@@ -62,17 +62,23 @@ interface ICoin {
   is_active: boolean;
   type: string;
 }
+interface ICoinsProps {
+  toggleDark: () => void;
+}
 
-function Coins() {
+function Coins( { toggleDark }: ICoinsProps ) {
     const { isLoading, data } = useQuery<ICoin[]>("allCoins", fetchCoins);
    
     return (
         <Container>
-            <Helmet>
-              <title>코인</title>
-            </Helmet>
+            <HelmetProvider>
+              <Helmet>
+                <title>코인</title>
+              </Helmet>
+            </HelmetProvider>
             <Header>
-                <Title>코인</Title>
+              <Title>코인</Title>
+              <button onClick={toggleDark}>Toggle Mode</button>
             </Header>
             {isLoading ? (
                 <Loader>Loading...</Loader>
