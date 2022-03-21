@@ -134,16 +134,13 @@ interface PriceData {
     };
   };
 }
-interface ICoinProps {
-  isDark: boolean;
-}
+interface ICoinProps {}
 
-function Coin({ isDark }: ICoinProps) {
+function Coin({}: ICoinProps) {
   const { coinId } = useParams();
   const { state } = useLocation() as RouterState;  
   const priceMatch = useMatch("/:coinId/price");
   const chartMatch = useMatch("/:coinId/chart");
-  console.log("coin",isDark )
 
   const { isLoading: infoLoading, data: infoData } = useQuery<InfoData>(
     ["info", coinId],
@@ -215,7 +212,7 @@ function Coin({ isDark }: ICoinProps) {
               </Tab>
             </Tabs>
 
-            <Outlet context={{coinId:coinId, isDark:isDark}}/> 
+            <Outlet context={{coinId:coinId}}/> 
           </>
         )}
     </Container>
