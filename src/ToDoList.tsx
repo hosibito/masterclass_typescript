@@ -51,7 +51,7 @@ function ToDoList() {
         }
     );
 
-    const onValid = (data: any) => {  
+    const onValid = (data: IForm) => {  
         console.log(data);
     };
 
