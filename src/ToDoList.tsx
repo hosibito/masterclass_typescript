@@ -36,6 +36,7 @@ interface IForm {
     username: string;
     password: string;
     password1: string;
+    extraError?: string; // 잇을수도 없을수도 있는 데이터
 }
 
 function ToDoList() {
@@ -43,6 +44,7 @@ function ToDoList() {
         register , 
         handleSubmit, 
         formState : {errors},
+        setError,
     } = useForm<IForm>(
         {
             defaultValues:{
@@ -51,9 +53,19 @@ function ToDoList() {
         }
     );
 
-    const onValid = (data: IForm) => {  
-        console.log(data);
+    const onValid = (data: IForm) => {
+        if (data.password !== data.password1) {
+            setError(
+                "password1",
+                { message: "Password are not the same" },
+                { shouldFocus: true }
+            );
+        }
+        if (true){
+            setError("extraError", {message: "server is down"})
+        }
     };
+    console.log(errors);
 
     return (
       <div>
@@ -77,7 +89,19 @@ function ToDoList() {
             <span>{errors?.email?.message}</span>
 
             <input
-                {...register("firstName", { required: "write here" })}
+                {...register(
+                        "firstName", 
+                        {
+                            required: "write here",
+                            validate: {
+                                noNico: (value) =>
+                                    value.includes("nico") ? "no nicos allowed" : true,
+                                noNick: (value) =>
+                                    value.includes("nick") ? "no nick allowed" : true,
+                            },
+                        }
+                    )
+                }
                 placeholder="First Name"
             />
             <span>{errors?.firstName?.message}</span>
@@ -116,6 +140,7 @@ function ToDoList() {
                 placeholder="Password1" />
             <span>{errors?.password1?.message}</span>
             <button>Add</button>
+            <span>{errors?.extraError?.message}</span>
         </form>
       </div>
     );
