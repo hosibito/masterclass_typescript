@@ -7,12 +7,34 @@ function ToDo({ text, category, id }: IToDo) {
     const onClick1 = (event: React.MouseEvent<HTMLButtonElement>) => {
         const { currentTarget: { name }, } = event;
         // event.currentTarget.name
-        console.log(name)
+        // console.log(name)
+        setToDos((oldToDos) => {
+            const targetIndex = oldToDos.findIndex((toDo) => toDo.id === id);
+            const oldTodo = oldToDos[targetIndex]
+            const newToDo = { text, id, category: name as IToDo["category"]};
+            console.log(oldTodo, newToDo)
+            return [
+                ...oldToDos.slice(0, targetIndex),
+                newToDo,
+                ...oldToDos.slice(targetIndex + 1),
+            ];
+        });
     };
+
     const onClick2 = ( category:IToDo["category"] ) => {
-        console.log(category)
-       
+        setToDos((oldToDos) => {
+            const targetIndex = oldToDos.findIndex((toDo) => toDo.id === id);
+            const oldTodo = oldToDos[targetIndex]
+            const newToDo = { text, id, category };
+            console.log(oldTodo, newToDo)
+            return [
+                ...oldToDos.slice(0, targetIndex),
+                newToDo,
+                ...oldToDos.slice(targetIndex + 1),
+            ];
+        });
     };
+
     return (
         <li>
             <span>{text}</span>
@@ -30,14 +52,25 @@ function ToDo({ text, category, id }: IToDo) {
                 <button name="DONE" onClick={onClick1}>
                     Done
                 </button>
-            )}
+            )} 
+
+            <span>!! {text} </span>
             {category !== "DOING" && (
                 <button onClick={()=> onClick2("DOING")}>
                     Doing2
                 </button>
             )}
-        </li>
-
+            {category !== "TO_DO" && (
+                <button onClick={()=> onClick2("TO_DO")}>
+                    To Do2
+                </button>
+            )}
+            {category !== "DONE" && (
+                <button onClick={()=> onClick2("DONE")}>
+                    Done2
+                </button>
+            )}           
+        </li>        
     );
 }
 
