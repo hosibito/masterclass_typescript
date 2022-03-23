@@ -1,6 +1,6 @@
 import React from "react";
 import { useSetRecoilState } from "recoil";
-import { IToDo, toDoState } from "../atoms";
+import { Categories, IToDo, toDoState } from "../atoms";
 
 function ToDo({ text, category, id }: IToDo) {
     const setToDos = useSetRecoilState(toDoState);
@@ -38,35 +38,35 @@ function ToDo({ text, category, id }: IToDo) {
     return (
         <li>
             <span>{text}</span>
-            {category !== "DOING" && (
-                <button name="DOING" onClick={onClick1}>
+            {category !== Categories.DOING && (
+                <button name={Categories.DOING} onClick={onClick1}>
                     Doing
                 </button>
             )}
-            {category !== "TO_DO" && (
-                <button name="TO_DO" onClick={onClick1}>
+            {category !== Categories.TO_DO && (
+                <button name={Categories.TO_DO} onClick={onClick1}>
                     To Do
                 </button>
             )}
-            {category !== "DONE" && (
-                <button name="DONE" onClick={onClick1}>
+            {category !== Categories.DONE && (
+                <button name={Categories.DONE} onClick={onClick1}>
                     Done
                 </button>
             )} 
 
             <span>!! {text} </span>
-            {category !== "DOING" && (
-                <button onClick={()=> onClick2("DOING")}>
+            {category !== Categories.DOING && (
+                <button onClick={()=> onClick2(Categories.DOING)}>
                     Doing2
                 </button>
             )}
-            {category !== "TO_DO" && (
-                <button onClick={()=> onClick2("TO_DO")}>
+            {category !== Categories.TO_DO && (
+                <button onClick={()=> onClick2(Categories.TO_DO)}>
                     To Do2
                 </button>
             )}
-            {category !== "DONE" && (
-                <button onClick={()=> onClick2("DONE")}>
+            {category !== Categories.DONE && (
+                <button onClick={()=> onClick2(Categories.DONE)}>
                     Done2
                 </button>
             )}           
