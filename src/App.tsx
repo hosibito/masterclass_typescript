@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { motion, useMotionValue } from "framer-motion";
+import { motion, useMotionValue ,useTransform } from "framer-motion";
 import { useEffect } from "react";
 
 
@@ -23,11 +23,12 @@ const Box = styled(motion.div)`
 
 function App() { 
   const x = useMotionValue(0);
+  const scale = useTransform(x, [-800, 0, 800], [2, 1, 0.1]);
   console.log(x)
-  useEffect( () => {x.onChange(() => console.log(x.get() ))}, [x] )
+  useEffect( () => {scale.onChange(() => console.log(scale.get() ))}, [x] )
   return (
     <Wrapper>
-      <Box style={{ x }} drag="x" dragSnapToOrigin />
+      <Box style={{ x, scale }} drag="x" dragSnapToOrigin />
     </Wrapper>
   );
 }
